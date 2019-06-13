@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div class="col-3">
     <div class="card" style="width: 18rem;">
       <img :src="pokemon.sprites.front_default" class="card-img-top" alt="Pokemon image">
       <div class="card-body">
-        <h5 class="card-title">{{pokemon.name}}</h5>
+        <h5 class="card-title text-capitalize">{{pokemon.name}}</h5>
         <p class="card-text">
           Height: {{pokemon.height}}<br>
           Weight: {{pokemon.weight}} <br>
         </p>
-        <a href= "#" class="btn btn-primary">Return</a>
+        <a href= "#" class="btn btn-primary">Return to Top</a>
      </div>
     </div>
   </div>
@@ -32,6 +32,17 @@ export default {
 
       const axios = require('axios');
       const vm = this;
+      
+      axios({
+        method: 'get',
+        url: 'https://pokeapi.co/api/v2/type',
+      })
+
+    .then(function (response) {
+      // console.log(response.data),
+      vm.pokemonType = response.data.pokemon
+      responseType: 'stream'
+    });
 
       axios({
         method: 'get',
@@ -40,7 +51,7 @@ export default {
       })
 
     .then(function (response) {
-      console.log(response.data),
+      // console.log(response.data),
       vm.pokemon = response.data
     });
   }

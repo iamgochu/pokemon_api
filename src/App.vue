@@ -1,16 +1,15 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="PokeDex"/>
-    <card :url="item.pokemon.url" v-for="item in pokemonRockType" :key="item.pokemon.name">
-     
-    </card>
-    <div v-for="item in pokemonRockType" :key="item.pokemon.name">
-      {{item.pokemon.name}} <br>
-      {{item.pokemon.url}}
+    <div class="container">
+      <h1 class="text-center display-1 my-5">{{activeType}} Type Pokemon</h1>
+      <span :key="type.name" v-for="type in types" class="btn btn-primary m-1" v-on:click="newFunction(type.name)">
+        {{type.name}}
+      </span>
+      <div class="row">
+        <card :url="item.pokemon.url" v-for="item in currentPokemonType" :key="item.pokemon.name"></card>
+      </div>
     </div>
   </div>
- 
 </template>
 
 <script>
@@ -18,7 +17,7 @@ import HelloWorld from './components/HelloWorld.vue'
 import card from './components/card.vue'
 
 export default {
-  name: 'type',
+  name: 'app',
   components: {
     HelloWorld,
     card
@@ -27,12 +26,34 @@ export default {
 
   data: function(){
     return{
-      pokemonRockType: ""
+      types: "",
+      currentPokemonType:"",
+      activeType: "rock"
     }
   },
 
-  props: {
-    url: String
+  methods:{
+    newFunction: function(name){
+      console.log("newFunction works")
+      this.getSpecificType(this.activeType);
+      this.activeType = name;
+    },
+
+    getSpecificType: function(type){
+
+      const axios = require('axios');
+      const vm = this;
+
+      axios({
+        method: 'get',
+        url: 'https://pokeapi.co/api/v2/type/' + type
+        })
+
+      .then(function (response) {
+        // console.log(response.data),
+        vm.currentPokemonType = response.data.pokemon
+      });
+    }
   },
 
   // anything inside mounted runs as soon as the page loads
@@ -42,28 +63,25 @@ export default {
       const axios = require('axios');
       const vm = this;
 
-      axios({
+      this.getSpecificType(this.activeType);
+
+       axios({
         method: 'get',
-        url: 'https://pokeapi.co/api/v2/type/rock',
-        responseType: 'stream'
+        url: 'https://pokeapi.co/api/v2/type',
       })
 
-    .then(function (response) {
-      console.log(response.data),
-      vm.pokemonRockType = response.data.pokemon
-    });
+      .then(function (response) {
+        // console.log(response.data),
+        vm.types = response.data.results
+      });
   }
-  
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style scoped>
+.card{
+  text-align: center,
+
+
 }
 </style>
