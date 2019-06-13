@@ -19,12 +19,12 @@ export default {
   name: 'card',
   data: function(){
     return{
-      pokemon: null
+      pokemon: ""
     }
   },
 
   props: {
-    msg: String
+    url: String
   },
 
   mounted: function(){
@@ -35,7 +35,7 @@ export default {
 
       axios({
         method: 'get',
-        url: 'https://pokeapi.co/api/v2/pokemon/mewtwo',
+        url: vm.url,
         responseType: 'stream'
       })
 
