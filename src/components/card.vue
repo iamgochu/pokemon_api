@@ -1,5 +1,5 @@
 <template>
-  <div class="col-3">
+  <div class="col-3" v-if="pokemon.sprites && pokemon.sprites.front_default">
     <div class="card" style="width: 18rem;">
       <img :src="pokemon.sprites.front_default" class="card-img-top" alt="Pokemon image">
       <div class="card-body">
@@ -11,6 +11,9 @@
         <a href= "#" class="btn btn-primary">Return to Top</a>
      </div>
     </div>
+  </div>
+  <div v-else>
+
   </div>
 </template>
 
